@@ -71,7 +71,7 @@ public class QuickyDAOImpl {
 			isDeleted = true;
 			
 		}catch (InvalidKeyException ike) {
-			throw new InvalidKeyException();
+			throw new InvalidKeyException("hello");
 
 		} catch (Exception e) {
 			// TODO: handle exception
@@ -156,7 +156,7 @@ public class QuickyDAOImpl {
 			
 			
 		}catch (InvalidKeyException ike) {
-			throw new InvalidKeyException();
+			throw new InvalidKeyException("hello");
 
 		} catch (Throwable e) {
 			// TODO: handle exception
