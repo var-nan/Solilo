@@ -17,8 +17,17 @@
 </head>
 <body>
 <center>
-    <form action="QuickyServlet" method="post">
+    <%
+        // get confirmation message from servlet
+        if (request.getParameter("success") != null) {
+            //out.println("<h5 color='green'>Quicky addedd succesfully</h5>");
+        }
+    %>
+
+    <form action="quickyservlet" method="post">
         <textarea name="quickyMessage" rows="5" cols="50"></textarea><br/>
+        <input type="checkbox" id="visibility" name="visibility" value="private">
+        <label for="visibility">Private</label><br>
         <input type="submit" value="Send"> <br/><a href="logout.jsp">Logout</a>
     </form>
 
