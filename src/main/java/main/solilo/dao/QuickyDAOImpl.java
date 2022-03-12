@@ -2,12 +2,18 @@ package main.solilo.dao;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaBuilder;
 
 import main.solilo.bean.Quicky;
 import main.solilo.entity.QuickyEntity;
 import main.solilo.exceptions.InvalidKeyException;
 import main.solilo.utilities.JPAUtility;
+import net.bytebuddy.implementation.bytecode.Throw;
+
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.List;
 
 public class QuickyDAOImpl {
 
@@ -154,7 +160,6 @@ public class QuickyDAOImpl {
 								quickyEntity.isVisible(), 
 								quickyEntity.isModified());
 			
-			
 		}catch (InvalidKeyException ike) {
 			throw new InvalidKeyException("hello");
 
@@ -163,12 +168,49 @@ public class QuickyDAOImpl {
 			throw new RuntimeException(e);
 			
 		} finally {
+
 			if (entityManager != null && entityManager.isOpen())
 				entityManager.close();
 			
 		}
 		return quicky;
 		
+	}
+
+	public static List<QuickyEntity> getQuickyEntities(int n) throws RuntimeException{
+		List<QuickyEntity> quickies;
+		EntityManagerFactory entityManagerFactory = null;
+		EntityManager entityManager = null;
+
+		try {
+			String subQuery = "SELECT k FROM QuickyEntity k ORDER BY k.created DESC";
+			//String mainQuery = "SELECT * FROM ("+ subQuery +") ORDER BY created";
+			//String tempQuery = "SELECT k FROM quicky k";
+
+			entityManagerFactory = JPAUtility.getEntityManagerFactory();
+			entityManager = entityManagerFactory.createEntityManager();
+
+			//entityManager.getTransaction().begin();
+			Query query = entityManager.createQuery(subQuery);
+			query.setMaxResults(n);
+			quickies = query.getResultList();
+			// convert to quickies in service layer?
+			//entityManager.getTransaction().commit();
+
+		} catch (Throwable ex) {
+			throw new RuntimeException(ex);
+
+		} finally {
+			// close entitymanagerfactory
+			if (entityManager != null && entityManager.isOpen())
+				entityManager.close();
+			/*
+			if (entityManagerFactory != null && entityManagerFactory.isOpen())
+				entityManagerFactory.close();
+			*/
+		}
+		return quickies;
+
 	}
 
 }

@@ -26,10 +26,6 @@
             session.setAttribute("errorMessage", "Invalid password");
             response.sendRedirect("login.jsp");
         }
-    } else {
-        //error = true;
-        session.setAttribute("error", true);
-        session.setAttribute("errorMesage", "Password cannot be empty");
     }
 %>
 <!DOCTYPE html>
@@ -39,28 +35,24 @@
     <title>Login</title>
 </head>
 <body>
-<center>
-<div>
+<div id="formdiv">
     <%
         if (session.getAttribute("error") != null){
             if ((boolean)session.getAttribute("error")) {
-                //System.out.println(session.getAttribute("<h5>errorMessage</h5>"));
                 String errorMessage = (String)session.getAttribute("errorMessage");
                 // todo: handle firsttime requests.
-                //out.println("<h5 color='red'>"+errorMessage);
+                out.println(errorMessage);
                 session.setAttribute("error", null);
-                session.setAttribute("errorMessage","");
-
+                session.setAttribute("errorMessage",null);
             }
         }
     %>
 
     <form method="post" action="login.jsp" >
         <h5>Please log in..</h5> <br/>
-        passphrase: <input type="password" name="login-password"><br/>
-        <input type="submit" value="OK">
+        passcode: <input type="password" name="login-password" required>
+        <button type="submit" value="OK">GO</button>
     </form>
 </div>
-</center>
 </body>
 </html>

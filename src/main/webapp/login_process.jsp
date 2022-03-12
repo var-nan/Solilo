@@ -13,6 +13,18 @@
 <body>
 
 <%
+    if (request.getParameter("passcode") != null) {
+        // check and validate
+        if (request.getParameter("passcode").equals("hello")) {
+            // validation successful, redirect to form
+            session.setAttribute("user", true);
+            response.sendRedirect("QuickyForm.jsp");
+        } else {
+            session.setAttribute("error", true);
+            session.setAttribute("errorMessage", "Ivalid password");
+            response.sendRedirect("login.jsp");
+        }
+    }
     boolean error = false;
     String passcode = request.getParameter("login-password");
     if (passcode.equals("hello")){

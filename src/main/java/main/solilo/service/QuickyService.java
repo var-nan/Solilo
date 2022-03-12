@@ -2,7 +2,11 @@ package main.solilo.service;
 
 import main.solilo.bean.Quicky;
 import main.solilo.dao.QuickyDAOImpl;
+import main.solilo.entity.QuickyEntity;
 import main.solilo.exceptions.InvalidKeyException;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class QuickyService {
     //
@@ -25,5 +29,21 @@ public class QuickyService {
             throws InvalidKeyException, Exception {
         // call dao
         return QuickyDAOImpl.deleteQuicky(time);
+    }
+
+    public static ArrayList<Quicky> getMessages(int n) throws RuntimeException {
+        // convert all the quicky entity to quicky;
+
+        List<QuickyEntity> quickyEntities = QuickyDAOImpl.getQuickyEntities(n);
+        ArrayList<Quicky> quickies = new ArrayList<>();
+
+        for(QuickyEntity qe: quickyEntities) {
+            // create quicky and add to list
+            quickies.add(
+                    new Quicky(qe.getCreated(), qe.getMessage(),
+                            qe.isVisible(), qe.isModified())
+            );
+        }
+        return quickies;
     }
 }
