@@ -2,8 +2,10 @@
     position: center;
     padding: 10%;
 }
-tr:hover {background-color: aqua;}
-
+tr:hover {background-color: lightgreen;}
+td {
+    padding: 0 15px;
+}
 #quickyform {
     position: center;
 }

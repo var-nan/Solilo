@@ -17,7 +17,7 @@
 %>
 <html>
 <head>
-    <title>Title</title>
+    <title>Quicky</title>
     <link rel="stylesheet" type="text/css" href="stylesheets/style.css">
 </head>
 <body>
@@ -27,7 +27,7 @@
         ArrayList<Quicky> allQuickies;
         if (session.getAttribute("allQuickies") == null) {
             // connect to database and get quickies
-            allQuickies = QuickyService.getMessages(5);
+            allQuickies = QuickyService.getMessages(10);
             session.setAttribute("allQuickies", allQuickies);
         }
         allQuickies = (ArrayList<Quicky>) session.getAttribute("allQuickies");
@@ -69,8 +69,9 @@
         <label for="visibility">Private</label><br/>
         <button id="submitbutton" class="buttons" type="submit" value="Send">Send</button>
         <button id="resetbutton" class="buttons" type="reset" value="Reset">Reset</button>
-        <br/><br><a href="logout.jsp"><button>Logout</button></a>
+        <br/><br>
     </form>
+    <a href="logout.jsp"><button>Logout</button></a>
 
 </center>
 </div>

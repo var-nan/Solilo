@@ -57,7 +57,7 @@ public class QuickyServlet extends HttpServlet {
         curSession.setAttribute("success", true);
 
         // store all the quickies in session variable and update automatically
-        ArrayList<Quicky> allQuickies = QuickyService.getMessages(5);
+        ArrayList<Quicky> allQuickies = QuickyService.getMessages(10);
         curSession.setAttribute("allQuickies", allQuickies);
 
         log("redirecting to quickyform");
