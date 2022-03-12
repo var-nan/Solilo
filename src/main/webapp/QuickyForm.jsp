@@ -21,7 +21,8 @@
     <link rel="stylesheet" type="text/css" href="stylesheets/style.css">
 </head>
 <body>
-<div id="allquickies">
+<center>
+<div id="allquickies" style="position: center">
     <%
         // all quickies in session variable
         ArrayList<Quicky> allQuickies;
@@ -48,8 +49,7 @@
 
     </table>
 </div>
-<div id="quickyform">
-<center>
+<div id="quickyform" style="position:center">
 
     <h5 id="successmessage">
     <%
@@ -63,7 +63,7 @@
     </h5>
 
     <form action="quickyservlet" method="post" class="quickyform">
-        <textarea id="bigtextarea" name="quickyMessage" rows="5" cols="50" placeholder="type something..." required></textarea>
+        <textarea id="bigtextarea" name="quickyMessage" rows="6" cols="70" placeholder="type something..." required></textarea>
         <br/>
         <input type="checkbox" id="visibility" name="visibility" value="private">
         <label for="visibility">Private</label><br/>
@@ -73,7 +73,7 @@
     </form>
     <a href="logout.jsp"><button>Logout</button></a>
 
-</center>
 </div>
+</center>
 </body>
 </html>
