@@ -1,0 +1,34 @@
+#quickiestable {
+    position: center;
+    padding: 10%;
+}
+tr:hover {background-color: aqua;}
+
+#quickyform {
+    position: center;
+}
+.buttons {
+    border: none;
+    color: white;
+    padding: 0.5%;
+    text-align: center;
+}
+
+#submitbutton {
+    background-color: forestgreen;
+}
+#resetbutton {
+    background-color: chocolate;
+}
+#successmessage {
+    color: green;
+
+}
+/*
+#bigtextarea {
+
+    background-image: url("https://www.freeiconspng.com/img/19017");
+    background-position: 10px 10px;
+}
+
+ */
