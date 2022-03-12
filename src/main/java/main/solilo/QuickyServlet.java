@@ -18,6 +18,7 @@ public class QuickyServlet extends HttpServlet {
         // if user is not logged in , redirect to login page
         HttpSession curSession = request.getSession();
         if (curSession.getAttribute("user") == null) {
+            log("QuickyForm is accessed without the user logged in. Redirecting to login page");
             response.sendRedirect("login.jsp");
         }
     }
@@ -25,12 +26,12 @@ public class QuickyServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException{
-        //System.out.println("doPost method is called here");
-        log("entered doPost method");
+
         HttpSession curSession = request.getSession();
 
         if (request.getParameter("quickyMessage") == null) {
             // add error and redirect to same page
+            log ("Null message is entered. show error");
             curSession.setAttribute("error", true);
             curSession.setAttribute("errorMessage", "Some message should be entered");
             response.sendRedirect("QuickyForm.jsp");
@@ -43,24 +44,24 @@ public class QuickyServlet extends HttpServlet {
         if (request.getParameter("visibiltity") != null) {
             isVisible = !(request.getParameter("visibility").equals("private"));
         }
-        // call service layer methods
-        log("reading parameters, isvisible: "+isVisible);
+
+        //  add quicky to database
 
         try {
             QuickyService.addMessage(quickyMessage, isVisible);
-            log("Quicky added succesfully");
+            log("Quicky added to database");
         } catch (Exception exp){
             exp.printStackTrace();
         }
 
-        // send confirmation
+        // set success flag in session.
         curSession.setAttribute("success", true);
 
         // store all the quickies in session variable and update automatically
         ArrayList<Quicky> allQuickies = QuickyService.getMessages(10);
         curSession.setAttribute("allQuickies", allQuickies);
 
-        log("redirecting to quickyform");
+        log("Redirecting to quickyform after getting latest quickies");
         response.sendRedirect("QuickyForm.jsp");
     }
 

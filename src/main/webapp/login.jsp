@@ -19,6 +19,7 @@
         String passcode = request.getParameter("login-password");
         if (passcode.equals("hello")) {
             session.setAttribute("user", true);
+
             response.sendRedirect("QuickyForm.jsp");
         } else {
             //error = true;
