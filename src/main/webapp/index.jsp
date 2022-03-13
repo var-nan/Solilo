@@ -2,12 +2,16 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>JSP - Hello World</title>
+    <title>Welcome</title>
 </head>
 <body>
-<h1><%= "Hello World!" %>
+<center>
+<h1><%= "Welcome to Solilo" %>
 </h1>
 <br/>
+<button>
 <a href="login.jsp">Login to application</a>
+</button>
+</center>
 </body>
 </html>
