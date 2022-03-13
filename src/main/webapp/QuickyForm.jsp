@@ -38,7 +38,8 @@
             <th>Time</th> <th>Quicky</th>
         </tr>
         <%
-            for (Quicky q: allQuickies) {
+            for (int i = allQuickies.size()-1; i>=0; i--) {
+                Quicky q = allQuickies.get(i);
                 String message = q.getMessage();
                 String qtime = q.getCreated();
         %>

@@ -34,7 +34,7 @@ public class Quicky {
 	
 	private String getDate() {
 		Date now = new Date();
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		return sdf.format(now);
 	}
 	
