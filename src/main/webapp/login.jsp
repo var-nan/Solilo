@@ -36,6 +36,7 @@
     <title>Login</title>
 </head>
 <body>
+<center>
 <div id="formdiv">
     <%
         if (session.getAttribute("error") != null){
@@ -55,5 +56,6 @@
         <button type="submit" value="OK">GO</button>
     </form>
 </div>
+</center>
 </body>
 </html>

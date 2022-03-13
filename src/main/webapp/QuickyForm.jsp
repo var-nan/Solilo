@@ -1,7 +1,5 @@
 <%@ page import="java.util.List" %>
-<%@ page import="main.solilo.bean.Quicky" %>
-<%@ page import="main.solilo.service.QuickyService" %>
-<%@ page import="java.util.ArrayList" %>
+
 <%--
   Created by IntelliJ IDEA.
   User: nandhan
@@ -10,6 +8,10 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ page import="main.solilo.bean.Quicky" %>
+<%@ page import="main.solilo.service.QuickyService" %>
+<%@ page import="java.util.ArrayList" %>
 <% if (session.getAttribute("user") == null) {
     // user is not loggedin, redirect to login page
     response.sendRedirect("login.jsp");
@@ -41,9 +43,15 @@
             for (int i = allQuickies.size()-1; i>=0; i--) {
                 Quicky q = allQuickies.get(i);
                 String message = q.getMessage();
-                String qtime = q.getCreated();
+                //String qtime = q.getCreated(); // don't know what this does.
+                pageContext.setAttribute("qTime", q.getCreated());
         %>
-            <tr> <td><%=qtime%></td> <td><%=message%></td> </tr>
+            <tr>
+                <td> <!-- parese date and time to desired format -->
+                    <fmt:parseDate value="${qTime}" var="dateObject" pattern="yyyy-MM-dd HH:mm:ss" />
+                    <fmt:formatDate value="${dateObject}" pattern="MMM dd, HH:mm" /> </td>
+                <td><%=message%></td>
+            </tr>
             <%
             }
             %>
