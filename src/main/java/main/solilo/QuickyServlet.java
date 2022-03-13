@@ -46,16 +46,21 @@ public class QuickyServlet extends HttpServlet {
         }
 
         //  add quicky to database
+        boolean success;
 
         try {
-            QuickyService.addMessage(quickyMessage, isVisible);
+            success = QuickyService.addMessage(quickyMessage, isVisible);
             log("Quicky added to database");
         } catch (Exception exp){
+            success = false;
+            log("quicky not added to database");
             exp.printStackTrace();
         }
 
         // set success flag in session.
-        curSession.setAttribute("success", true);
+        //if (success) curSession.setAttribute("success", true);
+        //else curSession.setAttribute("success", false);
+        curSession.setAttribute("success", success);
 
         // store all the quickies in session variable and update automatically
         ArrayList<Quicky> allQuickies = QuickyService.getMessages(10);

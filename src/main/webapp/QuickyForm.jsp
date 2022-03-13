@@ -56,7 +56,9 @@
     <%
         // display confirmation message, if successful.
         if (session.getAttribute("success") != null) {
-            out.println("<h5 style='color:green'>Quicky addedd succesfully</h5>");
+            if ((boolean)session.getAttribute("success"))
+                out.println("<h5 style='color:green'>Quicky addedd succesfully</h5>");
+            else out.println("<h5 style='color:red'>Quicky not added</h5>");
             // remove successs message
             session.setAttribute("success", null);
         }
