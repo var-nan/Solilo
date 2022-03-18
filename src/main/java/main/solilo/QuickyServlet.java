@@ -14,7 +14,7 @@ import java.util.List;
 public class QuickyServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+            throws IOException {
         // if user is not logged in , redirect to login page
         HttpSession curSession = request.getSession();
         if (curSession.getAttribute("user") == null) {
@@ -25,7 +25,7 @@ public class QuickyServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException{
+            throws IOException{
 
         HttpSession curSession = request.getSession();
 
@@ -63,8 +63,8 @@ public class QuickyServlet extends HttpServlet {
         curSession.setAttribute("success", success);
 
         // store all the quickies in session variable and update automatically
-        ArrayList<Quicky> allQuickies = QuickyService.getMessages(10);
-        curSession.setAttribute("allQuickies", allQuickies);
+        List<Quicky> allQuickies = QuickyService.getTodayMessages();
+        curSession.setAttribute("todayQuickies", allQuickies);
 
         log("Redirecting to quickyform after getting latest quickies");
         response.sendRedirect("QuickyForm.jsp");

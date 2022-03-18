@@ -6,6 +6,7 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%
     // create a new session and set error messages
 
@@ -23,7 +24,7 @@
             response.sendRedirect("QuickyForm.jsp");
         } else {
             //error = true;
-            session.setAttribute("error", true);
+            session.setAttribute("incorrectPassword", true);
             session.setAttribute("errorMessage", "Invalid password");
             response.sendRedirect("login.jsp");
         }
@@ -38,21 +39,16 @@
 <body>
 <center>
 <div id="formdiv">
-    <%
-        if (session.getAttribute("error") != null){
-            if ((boolean)session.getAttribute("error")) {
-                String errorMessage = (String)session.getAttribute("errorMessage");
-                // todo: handle firsttime requests.
-                out.println(errorMessage);
-                session.setAttribute("error", null);
-                session.setAttribute("errorMessage",null);
-            }
-        }
-    %>
 
     <form method="post" action="login.jsp" >
+        <c:if test="${incorrectPassword}">
+            <h5>wrong</h5>
+            <c:out value="Hmm... Incorrect Password"/>
+            <c:remove var="incorrectPassword"/>
+        </c:if>
+
         <h5>Please log in..</h5> <br/>
-        passcode: <input type="password" name="login-password" required>
+        Passcode: <input type="password" name="login-password" required>
         <button type="submit" value="OK">GO</button>
     </form>
 </div>

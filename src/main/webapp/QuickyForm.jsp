@@ -8,6 +8,7 @@
 
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ page import="main.solilo.bean.Quicky" %>
 <%@ page import="main.solilo.service.QuickyService" %>
 <%@ page import="java.util.ArrayList, java.util.List" %>
@@ -28,39 +29,38 @@
 <center>
 <div id="allquickies" style="position: center">
     <%
-        // all quickies in session variable
-        ArrayList<Quicky> allQuickies;
-        if (session.getAttribute("allQuickies") == null) {
+        // get all current day's quickies if session variable is null.
+        List<Quicky> todayQuickies;
+        if (session.getAttribute("todayQuickies") == null) {
             // connect to database and get quickies
-            allQuickies = QuickyService.getMessages(10);
-            session.setAttribute("allQuickies", allQuickies);
+            todayQuickies = QuickyService.getTodayMessages();
+            session.setAttribute("todayQuickies", todayQuickies);
         }
-        allQuickies = (ArrayList<Quicky>) session.getAttribute("allQuickies");
-
+        todayQuickies = (List<Quicky>) session.getAttribute("todayQuickies");
     %>
-    <table id="quickiestable">
-        <tr>
-            <th>Time</th> <th>Quicky</th>
-        </tr>
-        <%
-            for (int i = allQuickies.size()-1; i>=0; i--) {
-                Quicky q = allQuickies.get(i);
-                String message = q.getMessage();
-                //String qtime = q.getCreated(); // don't know what this does.
-                pageContext.setAttribute("qTime", q.getCreated());
-        %>
-            <tr>
-                <td> <!-- parese date and time to desired format -->
-                    <fmt:parseDate value="${qTime}" var="dateObject" pattern="yyyy-MM-dd HH:mm:ss" />
-                    <fmt:formatDate value="${dateObject}" pattern="MMM dd, HH:mm" /> </td>
-                <td><%=message%></td>
-            </tr>
-            <%
-            }
-            %>
 
-    </table>
+    <c:set var="nquickies" value="${todayQuickies.size()}" scope="session"> </c:set>
+    <c:choose>
+        <c:when test="${nquickies>0}">
+            <!-- print table -->
+            <table id="quickiestable">
+                <tr> <th>Time</th> <th>Quicky</th> </tr>
+                <c:forEach var="quicky" items="${todayQuickies}">
+                    <tr>
+                        <td><fmt:parseDate value="${quicky.created}" var="dateObject" pattern="yyyy-MM-dd HH:mm:ss" />
+                            <fmt:formatDate value="${dateObject}" pattern="MMM dd, HH:mm" /></td>
+                        <td>${quicky.message}</td>
+                    </tr>
+                </c:forEach>
+            </table>
+        </c:when>
+        <c:otherwise>
+            <h3>Nothing here but Crickets ¯\_(ツ)_/¯</h3>
+        </c:otherwise>
+    </c:choose>
+
 </div>
+
 <div id="quickyform" style="position:center">
 
     <h5 id="successmessage">
