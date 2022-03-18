@@ -1,5 +1,3 @@
-<%@ page import="java.util.List" %>
-
 <%--
   Created by IntelliJ IDEA.
   User: nandhan
@@ -7,15 +5,19 @@
   Time: 4:26 PM
   To change this template use File | Settings | File Templates.
 --%>
+
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page import="main.solilo.bean.Quicky" %>
 <%@ page import="main.solilo.service.QuickyService" %>
-<%@ page import="java.util.ArrayList" %>
-<% if (session.getAttribute("user") == null) {
-    // user is not loggedin, redirect to login page
-    response.sendRedirect("login.jsp");
-}
+<%@ page import="java.util.ArrayList, java.util.List" %>
+<%@ page import="main.solilo.dao.QuickyDAOImpl" %>
+
+<%
+    if (session.getAttribute("user") == null) {
+        // user is not loggedin, redirect to login page
+        response.sendRedirect("login.jsp");
+    }
 %>
 <html>
 <head>
@@ -34,6 +36,7 @@
             session.setAttribute("allQuickies", allQuickies);
         }
         allQuickies = (ArrayList<Quicky>) session.getAttribute("allQuickies");
+
     %>
     <table id="quickiestable">
         <tr>
@@ -78,11 +81,11 @@
         <br/>
         <input type="checkbox" id="visibility" name="visibility" value="private">
         <label for="visibility">Private</label><br/>
-        <button id="submitbutton" class="buttons" type="submit" value="Send">Send</button>
+        <button id="submitbutton" class="buttons" type="submit" value="Send">Post</button>
         <button id="resetbutton" class="buttons" type="reset" value="Reset">Reset</button>
         <br/><br>
     </form>
-    <a href="logout.jsp"><button>Logout</button></a>
+    <a href="logout.jsp"><button>Logout</button></a> <a href="index.jsp"><button>Home Page</button></a>
 
 </div>
 </center>

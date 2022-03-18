@@ -7,6 +7,7 @@ import main.solilo.exceptions.InvalidKeyException;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class QuickyService {
     //
@@ -45,5 +46,13 @@ public class QuickyService {
             );
         }
         return quickies;
+    }
+
+    public static List<Quicky> getTodayMessages() {
+        // convert entity objects to bean objects
+        return QuickyDAOImpl.getTodayQuickies().stream().map(
+                e -> new Quicky(e.getCreated(), e.getMessage(),
+                                e.isVisible(), e.isModified())).
+                collect(Collectors.toList());
     }
 }

@@ -9,7 +9,7 @@
 <%
     // delete session data
     session.invalidate();
-    response.sendRedirect("login.jsp");
+    response.sendRedirect("index.jsp");
 %>
 <html>
 <head>

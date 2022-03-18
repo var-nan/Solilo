@@ -2,9 +2,7 @@
     position: center;
     padding: 2%;
 }
-body {
-    background-color: lightgrey;
-}
+
 tr:hover {background-color: lightgreen;}
 td {
     padding: 0 15px;

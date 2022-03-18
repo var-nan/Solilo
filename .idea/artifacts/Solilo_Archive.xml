@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="Solilo_Archive">
+    <output-path>/var/lib/tomcat9/webapps</output-path>
+    <root id="archive" name="Solilo_Archive.war">
+      <element id="artifact" artifact-name="Solilo:war exploded" />
+    </root>
+  </artifact>
+</component>

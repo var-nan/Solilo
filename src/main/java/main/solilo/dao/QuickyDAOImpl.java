@@ -3,16 +3,13 @@ package main.solilo.dao;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Query;
-import javax.persistence.criteria.CriteriaBuilder;
 
 import main.solilo.bean.Quicky;
 import main.solilo.entity.QuickyEntity;
 import main.solilo.exceptions.InvalidKeyException;
 import main.solilo.utilities.JPAUtility;
-import net.bytebuddy.implementation.bytecode.Throw;
 
-import java.lang.reflect.Array;
-import java.util.ArrayList;
+import java.time.LocalDate;
 import java.util.List;
 
 public class QuickyDAOImpl {
@@ -210,7 +207,43 @@ public class QuickyDAOImpl {
 			*/
 		}
 		return quickies;
+	}
 
+	public static List<QuickyEntity> getTodayQuickies() throws RuntimeException {
+		List<QuickyEntity> quickies;
+		EntityManagerFactory entityManagerFactory;
+		EntityManager entityManager = null;
+
+		try {
+			String subQuery = "SELECT k FROM QuickyEntity k WHERE " +
+					"DAY(k.created)=?1 and MONTH(k.created)=?2 and YEAR(k.created)=?3";
+			LocalDate today = LocalDate.now();
+			entityManagerFactory = JPAUtility.getEntityManagerFactory();
+			entityManager = entityManagerFactory.createEntityManager();
+
+			//entityManager.getTransaction().begin();
+			Query query = entityManager.createQuery(subQuery);
+			query.setParameter(1, today.getDayOfMonth());
+			query.setParameter(2, today.getMonthValue());
+			query.setParameter(3, today.getYear());
+
+			quickies = query.getResultList();
+			// convert to quickies in service layer?
+			//entityManager.getTransaction().commit();
+
+		} catch (Throwable ex) {
+			throw new RuntimeException(ex);
+
+		} finally {
+
+			if (entityManager != null && entityManager.isOpen())
+				entityManager.close();
+			/*
+			if (entityManagerFactory != null && entityManagerFactory.isOpen())
+				entityManagerFactory.close();
+			*/
+		}
+		return quickies;
 	}
 
 }

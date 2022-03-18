@@ -8,6 +8,7 @@
 <center>
 <h1><%= "Welcome to Solilo" %>
 </h1>
+    <h4 style="color:limegreen">Today is a good day. Go ahead and type what's in your mind</h4>
 <br/>
 <button>
 <a href="login.jsp">Login to application</a>
