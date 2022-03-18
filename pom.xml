@@ -78,6 +78,20 @@
             <version>1.2</version>
         </dependency>
 
+        <!-- Stanford NLP core Library and models -->
+        <dependency>
+            <groupId>edu.stanford.nlp</groupId>
+            <artifactId>stanford-corenlp</artifactId>
+            <version>4.4.0</version>
+        </dependency>
+        <dependency>
+            <groupId>edu.stanford.nlp</groupId>
+            <artifactId>stanford-corenlp</artifactId>
+            <version>4.4.0</version>
+            <classifier>models</classifier>
+        </dependency>
+
+
     </dependencies>
 
     <build>
@@ -86,6 +100,23 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-war-plugin</artifactId>
                 <version>3.3.2</version>
+            </plugin>
+
+            <plugin>
+                <groupId>org.codehaus.cargo</groupId>
+                <artifactId>cargo-maven3-plugin</artifactId>
+                <configuration>
+                    <container>
+                        <containerId>tomcat9x</containerId>
+                        <type>remote</type>
+                    </container>
+                    <configuration>
+                        <type>runtime</type>
+                        <properties>
+                            <cargo.server.settings>tomcat-server</cargo.server.settings>
+                        </properties>
+                    </configuration>
+                </configuration>
             </plugin>
         </plugins>
     </build>

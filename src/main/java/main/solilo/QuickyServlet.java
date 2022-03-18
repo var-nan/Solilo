@@ -3,11 +3,9 @@ package main.solilo;
 import main.solilo.bean.Quicky;
 import main.solilo.service.QuickyService;
 
-import javax.servlet.*;
 import javax.servlet.http.*;
 import javax.servlet.annotation.*;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 @WebServlet(name="QuickyServlet", value="/quickyservlet")
@@ -58,8 +56,6 @@ public class QuickyServlet extends HttpServlet {
         }
 
         // set success flag in session.
-        //if (success) curSession.setAttribute("success", true);
-        //else curSession.setAttribute("success", false);
         curSession.setAttribute("success", success);
 
         // store all the quickies in session variable and update automatically

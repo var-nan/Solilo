@@ -11,12 +11,12 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ page import="main.solilo.bean.Quicky" %>
 <%@ page import="main.solilo.service.QuickyService" %>
-<%@ page import="java.util.ArrayList, java.util.List" %>
-<%@ page import="main.solilo.dao.QuickyDAOImpl" %>
+<%@ page import="java.util.List" %>
+<%@ page import="main.solilo.utilities.Sentiment" %>
 
 <%
     if (session.getAttribute("user") == null) {
-        // user is not loggedin, redirect to login page
+        // user is not logged, redirect to login page
         response.sendRedirect("login.jsp");
     }
 %>
@@ -30,13 +30,11 @@
 <div id="allquickies" style="position: center">
     <%
         // get all current day's quickies if session variable is null.
-        List<Quicky> todayQuickies;
         if (session.getAttribute("todayQuickies") == null) {
-            // connect to database and get quickies
-            todayQuickies = QuickyService.getTodayMessages();
-            session.setAttribute("todayQuickies", todayQuickies);
+            // get current day's quickies and add to session variable
+            session.setAttribute("todayQuickies", QuickyService.getTodayMessages());
         }
-        todayQuickies = (List<Quicky>) session.getAttribute("todayQuickies");
+        List <Quicky> todayQuickies = (List<Quicky>) session.getAttribute("todayQuickies");
     %>
 
     <c:set var="nquickies" value="${todayQuickies.size()}" scope="session"> </c:set>
@@ -53,7 +51,29 @@
                     </tr>
                 </c:forEach>
             </table>
+
+            <div id="sentimentdiv">
+                <h4> Current Mood:
+                <c:set value="${Sentiment.getSentimentValue(todayQuickies)}" var="sentimentValue" scope="page" />
+                <c:choose>
+                    <c:when test="${sentimentValue==1}">
+                        <h4 style="color:indianred">Sad</h4>
+                    </c:when>
+                    <c:when test="${sentimentValue==2}">
+                        <h4>Neutral</h4>
+                    </c:when>
+                    <c:when test="${sentimentValue==3}">
+                        <h4 style="color: darkslateblue">Happy</h4>
+                    </c:when>
+                    <c:when test="${sentimentValue==4}">
+                        <h4 style="color: forestgreen">Amazing</h4>
+                    </c:when>
+                </c:choose>
+                </h4>
+            </div>
+
         </c:when>
+
         <c:otherwise>
             <h3>Nothing here but Crickets ¯\_(ツ)_/¯</h3>
         </c:otherwise>
@@ -77,6 +97,7 @@
     </h5>
 
     <form action="quickyservlet" method="post" class="quickyform">
+        <label for="bigtextarea"></label>
         <textarea id="bigtextarea" name="quickyMessage" rows="6" cols="70" placeholder="type something..." required></textarea>
         <br/>
         <input type="checkbox" id="visibility" name="visibility" value="private">
