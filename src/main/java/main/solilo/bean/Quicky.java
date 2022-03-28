@@ -1,5 +1,7 @@
 package main.solilo.bean;
 
+import main.solilo.utilities.Sentiment;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -8,6 +10,7 @@ public class Quicky {
 	private String created;
 	private boolean visible = true;
 	private boolean modified = false;
+	private int sentiment;
 	
 	public Quicky() {
 		this.created = getDate();
@@ -16,20 +19,23 @@ public class Quicky {
 	public Quicky(String time, String message) {
 		this.message = message;
 		this.created = time;
+		this.sentiment = Sentiment.getSentimentValue(message);
 	}
 
 	public Quicky(String message, boolean visibility) {
 		this.created = getDate();
 		this.message = message;
 		this.visible = visibility;
+		this.sentiment = Sentiment.getSentimentValue(message);
 	}
 	
 	// constructor only for updating entities
-	public Quicky(String time, String message, boolean visibility, boolean modified) {
+	public Quicky(String time, String message, boolean visibility, boolean modified, int sentiment) {
 		this.message = message;
 		this.created = time;
 		this.visible = visibility;
 		this.modified = modified;
+		this.sentiment = sentiment;
 	}
 	
 	private String getDate() {
@@ -37,7 +43,6 @@ public class Quicky {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		return sdf.format(now);
 	}
-	
 
 	public String getCreated() {
 		return this.created;
@@ -69,6 +74,15 @@ public class Quicky {
 
 	public void setModified(boolean modified) {
 		this.modified = modified;
+	}
+
+	public int getSentiment() {
+		return this.sentiment;
+	}
+
+	// I don't this this is needed
+	public void setSentiment(int n) {
+		this.sentiment = n;
 	}
 
 	@Override

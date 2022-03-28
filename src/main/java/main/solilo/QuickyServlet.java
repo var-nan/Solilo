@@ -61,6 +61,7 @@ public class QuickyServlet extends HttpServlet {
         // store all the quickies in session variable and update automatically
         List<Quicky> allQuickies = QuickyService.getTodayMessages();
         curSession.setAttribute("todayQuickies", allQuickies);
+        curSession.setAttribute("todaySentiment",QuickyService.getTodaySentiment());
 
         log("Redirecting to quickyform after getting latest quickies");
         response.sendRedirect("QuickyForm.jsp");

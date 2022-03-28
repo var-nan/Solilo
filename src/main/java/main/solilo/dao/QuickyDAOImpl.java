@@ -1,14 +1,13 @@
 package main.solilo.dao;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Query;
+import javax.persistence.*;
 
 import main.solilo.bean.Quicky;
 import main.solilo.entity.QuickyEntity;
 import main.solilo.exceptions.InvalidKeyException;
 import main.solilo.utilities.JPAUtility;
 
+import java.sql.ResultSet;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -113,6 +112,7 @@ public class QuickyDAOImpl {
 			quickyEntity.setMessage(quicky.getMessage());
 			quickyEntity.setVisibile(quicky.isVisible());
 			quickyEntity.setModified(true);
+			quickyEntity.setSentiment(quicky.getSentiment());
 			
 			//entityManager.persist(quickyEntity);
 			entityManager.getTransaction().commit();
@@ -155,7 +155,9 @@ public class QuickyDAOImpl {
 			quicky = new Quicky(quickyEntity.getCreated(), 
 								quickyEntity.getMessage(), 
 								quickyEntity.isVisible(), 
-								quickyEntity.isModified());
+								quickyEntity.isModified(),
+								quickyEntity.getSentiment()
+			);
 			
 		}catch (InvalidKeyException ike) {
 			throw new InvalidKeyException("hello");
@@ -180,7 +182,7 @@ public class QuickyDAOImpl {
 		EntityManager entityManager = null;
 
 		try {
-			String subQuery = "SELECT k FROM QuickyEntity k ORDER BY k.created DESC";
+			//String subQuery = "SELECT k FROM QuickyEntity k ORDER BY k.created DESC";
 			//String mainQuery = "SELECT * FROM ("+ subQuery +") ORDER BY created";
 			//String tempQuery = "SELECT k FROM quicky k";
 
@@ -188,7 +190,8 @@ public class QuickyDAOImpl {
 			entityManager = entityManagerFactory.createEntityManager();
 
 			//entityManager.getTransaction().begin();
-			Query query = entityManager.createQuery(subQuery);
+
+			Query query = entityManager.createNamedQuery("extractLatestQuickies");
 			query.setMaxResults(n);
 			quickies = query.getResultList();
 			// convert to quickies in service layer?
@@ -201,10 +204,6 @@ public class QuickyDAOImpl {
 			// close entitymanagerfactory
 			if (entityManager != null && entityManager.isOpen())
 				entityManager.close();
-			/*
-			if (entityManagerFactory != null && entityManagerFactory.isOpen())
-				entityManagerFactory.close();
-			*/
 		}
 		return quickies;
 	}
@@ -215,14 +214,13 @@ public class QuickyDAOImpl {
 		EntityManager entityManager = null;
 
 		try {
-			String subQuery = "SELECT k FROM QuickyEntity k WHERE " +
-					"DAY(k.created)=?1 and MONTH(k.created)=?2 and YEAR(k.created)=?3";
 			LocalDate today = LocalDate.now();
 			entityManagerFactory = JPAUtility.getEntityManagerFactory();
 			entityManager = entityManagerFactory.createEntityManager();
 
 			//entityManager.getTransaction().begin();
-			Query query = entityManager.createQuery(subQuery);
+			Query query = entityManager.createNamedQuery("extractTodayQuickies");
+			//Query query = entityManager.createQuery(subQuery);
 			query.setParameter(1, today.getDayOfMonth());
 			query.setParameter(2, today.getMonthValue());
 			query.setParameter(3, today.getYear());
@@ -238,12 +236,36 @@ public class QuickyDAOImpl {
 
 			if (entityManager != null && entityManager.isOpen())
 				entityManager.close();
-			/*
-			if (entityManagerFactory != null && entityManagerFactory.isOpen())
-				entityManagerFactory.close();
-			*/
 		}
 		return quickies;
+	}
+
+	public static int getSentimentAverage() {
+		//
+		EntityManagerFactory entityManagerFactory;
+		EntityManager entityManager = null;
+		int average = 0;
+
+		try {
+			entityManagerFactory = JPAUtility.getEntityManagerFactory();
+			entityManager = entityManagerFactory.createEntityManager();
+			LocalDate today = LocalDate.now();
+
+			Query query = entityManager.createNamedQuery("extractTodaySentimentAverage");
+			query.setParameter(1, today.getDayOfMonth());
+			query.setParameter(2, today.getMonthValue());
+			query.setParameter(3, today.getYear());
+
+			average = (query.getResultList().get(0) == null) ? -1: (int) Math.round((double) query.getResultList().get(0));
+
+		} catch (Throwable ex) {
+			throw new RuntimeException(ex);
+
+		} finally {
+			if (entityManager != null && entityManager.isOpen())
+				entityManager.close();
+		}
+		return average;
 	}
 
 }

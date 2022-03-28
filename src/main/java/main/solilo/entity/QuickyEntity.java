@@ -1,11 +1,26 @@
 package main.solilo.entity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import main.solilo.bean.Quicky;
+
+
+@NamedQueries({
+		@NamedQuery(
+				name = "extractTodaySentimentAverage",
+				query = "SELECT AVG(q.sentiment) FROM QuickyEntity q WHERE " +
+						"DAY(q.created)=?1 and MONTH(q.created)=?2 and YEAR(q.created)=?3"
+		),
+		@NamedQuery(
+				name="extractTodayQuickies",
+				query="SELECT k FROM QuickyEntity k WHERE " +
+						"DAY(k.created)=?1 and MONTH(k.created)=?2 and YEAR(k.created)=?3"
+		),
+		@NamedQuery(
+				name="extractLatestQuickies",
+				query="SELECT k FROM QuickyEntity k ORDER BY k.created DESC"
+		)
+})
 
 @Entity 
 @Table(name="quicky")
@@ -18,6 +33,7 @@ public class QuickyEntity {
 	private String message;
 	private boolean visible = true;
 	private boolean modified = false;
+	private int sentiment;
 	
 	// constructor
 	public QuickyEntity(Quicky quicky) {
@@ -25,6 +41,7 @@ public class QuickyEntity {
 		this.message = quicky.getMessage();
 		this.visible = quicky.isVisible();
 		this.modified = quicky.isModified();
+		this.sentiment = quicky.getSentiment();
 	}
 	
 	// TODO add default constructor, and set created method
@@ -53,6 +70,7 @@ public class QuickyEntity {
 	public String getMessage() {
 		return this.message;
 	}
+
 	public void setMessage(String message) {
 		this.message = message;
 	}
@@ -71,6 +89,14 @@ public class QuickyEntity {
 
 	public void setModified(boolean modified) {
 		this.modified = modified;
+	}
+
+	public int getSentiment() {
+		return this.sentiment;
+	}
+
+	public void setSentiment(int n) {
+		this.sentiment = n;
 	}
 
 	@Override

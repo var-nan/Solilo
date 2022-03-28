@@ -42,17 +42,21 @@ public class QuickyService {
             // create quicky and add to list
             quickies.add(
                     new Quicky(qe.getCreated(), qe.getMessage(),
-                            qe.isVisible(), qe.isModified())
+                            qe.isVisible(), qe.isModified(), qe.getSentiment())
             );
         }
         return quickies;
+    }
+
+    public static int getTodaySentiment() {
+        return QuickyDAOImpl.getSentimentAverage();
     }
 
     public static List<Quicky> getTodayMessages() {
         // convert entity objects to bean objects
         return QuickyDAOImpl.getTodayQuickies().stream().map(
                 e -> new Quicky(e.getCreated(), e.getMessage(),
-                                e.isVisible(), e.isModified())).
+                                e.isVisible(), e.isModified(), e.getSentiment())).
                 collect(Collectors.toList());
     }
 }

@@ -12,7 +12,6 @@
 <%@ page import="main.solilo.bean.Quicky" %>
 <%@ page import="main.solilo.service.QuickyService" %>
 <%@ page import="java.util.List" %>
-<%@ page import="main.solilo.utilities.Sentiment" %>
 
 <%
     if (session.getAttribute("user") == null) {
@@ -33,6 +32,7 @@
         if (session.getAttribute("todayQuickies") == null) {
             // get current day's quickies and add to session variable
             session.setAttribute("todayQuickies", QuickyService.getTodayMessages());
+            session.setAttribute("todaySentiment", QuickyService.getTodaySentiment());
         }
         List <Quicky> todayQuickies = (List<Quicky>) session.getAttribute("todayQuickies");
     %>
@@ -54,7 +54,7 @@
 
             <div id="sentimentdiv">
                 <h4> Current Mood:
-                <c:set value="${Sentiment.getSentimentValue(todayQuickies)}" var="sentimentValue" scope="page" />
+                <c:set value="${todaySentiment}" var="sentimentValue" scope="page" />
                 <c:choose>
                     <c:when test="${sentimentValue==1}">
                         <h4 style="color:indianred">Sad</h4>
