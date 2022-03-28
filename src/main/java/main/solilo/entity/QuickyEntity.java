@@ -4,7 +4,6 @@ import javax.persistence.*;
 
 import main.solilo.bean.Quicky;
 
-
 @NamedQueries({
 		@NamedQuery(
 				name = "extractTodaySentimentAverage",
@@ -48,14 +47,6 @@ public class QuickyEntity {
 	public QuickyEntity() {
 		// no need to do anything
 	}
-	
-	/*
-	private String getDate() {
-		Date now = new Date();
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm");
-		return sdf.format(now);
-	}
-	*/
 	
 	// get the date as string when returning from database
 

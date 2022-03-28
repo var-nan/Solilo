@@ -7,7 +7,6 @@ import main.solilo.entity.QuickyEntity;
 import main.solilo.exceptions.InvalidKeyException;
 import main.solilo.utilities.JPAUtility;
 
-import java.sql.ResultSet;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -182,20 +181,14 @@ public class QuickyDAOImpl {
 		EntityManager entityManager = null;
 
 		try {
-			//String subQuery = "SELECT k FROM QuickyEntity k ORDER BY k.created DESC";
-			//String mainQuery = "SELECT * FROM ("+ subQuery +") ORDER BY created";
-			//String tempQuery = "SELECT k FROM quicky k";
 
 			entityManagerFactory = JPAUtility.getEntityManagerFactory();
 			entityManager = entityManagerFactory.createEntityManager();
-
-			//entityManager.getTransaction().begin();
 
 			Query query = entityManager.createNamedQuery("extractLatestQuickies");
 			query.setMaxResults(n);
 			quickies = query.getResultList();
 			// convert to quickies in service layer?
-			//entityManager.getTransaction().commit();
 
 		} catch (Throwable ex) {
 			throw new RuntimeException(ex);
@@ -220,7 +213,6 @@ public class QuickyDAOImpl {
 
 			//entityManager.getTransaction().begin();
 			Query query = entityManager.createNamedQuery("extractTodayQuickies");
-			//Query query = entityManager.createQuery(subQuery);
 			query.setParameter(1, today.getDayOfMonth());
 			query.setParameter(2, today.getMonthValue());
 			query.setParameter(3, today.getYear());
