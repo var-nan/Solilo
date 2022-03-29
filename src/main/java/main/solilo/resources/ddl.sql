@@ -10,7 +10,7 @@ CREATE TABLE quicky (
 	message MEDIUMTEXT NOT NULL,
 	modified BOOLEAN DEFAULT false,
 	visible BOOLEAN DEFAULT true,
-	sentiment INTEGER DEFAULT 3
+	sentiment INTEGER DEFAULT 2
 );
 
 /* insert datetime as yyyy-mm-dd hh:mm:ss (yyyy-MM-dd %h:%m:%s) */

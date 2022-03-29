@@ -58,7 +58,8 @@ public class QuickyServlet extends HttpServlet {
         // set success flag in session.
         curSession.setAttribute("success", success);
 
-        // store all the quickies in session variable and update automatically
+        // store all the quickies in session variable.
+
         List<Quicky> allQuickies = QuickyService.getTodayMessages();
         curSession.setAttribute("todayQuickies", allQuickies);
         curSession.setAttribute("todaySentiment",QuickyService.getTodaySentiment());

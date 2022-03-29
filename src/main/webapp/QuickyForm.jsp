@@ -56,6 +56,9 @@
                 <h4> Current Mood:
                 <c:set value="${todaySentiment}" var="sentimentValue" scope="page" />
                 <c:choose>
+                    <c:when test="${sentimentValue==0}">
+                        <h4 style="color:darkred">Very Sad</h4>
+                    </c:when>
                     <c:when test="${sentimentValue==1}">
                         <h4 style="color:indianred">Sad</h4>
                     </c:when>
